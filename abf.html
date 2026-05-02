@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>ABF Timer</title>
+    <link href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' rx='40' fill='%231a1a1a'/><text x='50%25' y='55%25' font-family='sans-serif' font-weight='900' font-size='70' fill='%2300afb9' text-anchor='middle' dominant-baseline='middle'>ABF</text></svg>"
+          rel="icon"
+          type="image/svg+xml">
+    <style>
+        :root {
+            --primary: #00adb5;
+            --secondary: #ff2e63;
+            --orange: #ff9f43;
+            --bg: #121212;
+            --card: #1e1e1e;
+            --text: #eeeeee;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 20px;
+            background: var(--card);
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0 0 5px 0;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #888;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #252525;
+            padding: 0;
+            border-radius: 12px;
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+
+        .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #888;
+        }
+
+        .value,
+        .big-display-value {
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .value {
+            font-size: 1.4rem;
+        }
+
+        .big-display-value {
+            font-size: 1.4rem;
+            margin: 10px 0;
+        }
+
+        .timer-val {
+            font-size: 5.5rem;
+            font-weight: 800;
+            margin: 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        button {
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 173, 181, 0.2);
+            transition: transform 0.1s, background-color 0.3s;
+            width: 85%;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        button.countdown {
+            background-color: var(--orange);
+            color: #121212;
+        }
+
+        button.stop {
+            background-color: var(--secondary);
+        }
+
+        .stat-card-inner {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            min-height: 64px;
+        }
+
+        .stat-card-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 10px 4px;
+        }
+
+        .adj-btn {
+            width: 36px;
+            padding: 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            background-color: #3a3a3a;
+            color: var(--text);
+            box-shadow: none;
+            margin: 0;
+            transition: background-color 0.15s;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .adj-btn:first-child {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .adj-btn:last-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        .adj-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .adj-btn:not(:disabled):hover {
+            background-color: #4a4a4a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PRESS LADDERS</h1>
+    <h2>2-3-5-10 presses</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-inner">
+                <button class="adj-btn" id="press-time-dec">−</button>
+                <div class="stat-card-center">
+                    <div class="label">Time</div>
+                    <div class="value" id="press-countdown">30:00</div>
+                </div>
+                <button class="adj-btn" id="press-time-inc">+</button>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-inner">
+                <button class="adj-btn" id="press-rounds-dec">−</button>
+                <div class="stat-card-center">
+                    <div class="label">Round</div>
+                    <div class="value" id="press-round-display">1 / 5</div>
+                </div>
+                <button class="adj-btn" id="press-rounds-inc">+</button>
+            </div>
+        </div>
+    </div>
+    <div class="big-display-value" id="press-reps-display">Ready?</div>
+    <div class="timer-val" id="press-interval-timer">--</div>
+    <button id="press-start-btn">START PRESSES</button>
+</div>
+
+<div class="container">
+    <h1>EMOM ABCS</h1>
+    <h2>1 ABC per minute</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-inner">
+                <button class="adj-btn" id="abc-time-dec">−</button>
+                <div class="stat-card-center">
+                    <div class="label">Time</div>
+                    <div class="value" id="abc-countdown">30:00</div>
+                </div>
+                <button class="adj-btn" id="abc-time-inc">+</button>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-inner">
+                <button class="adj-btn" id="abc-rounds-dec">−</button>
+                <div class="stat-card-center">
+                    <div class="label">Round</div>
+                    <div class="value" id="abc-rep-display">1 / 30</div>
+                </div>
+                <button class="adj-btn" id="abc-rounds-inc">+</button>
+            </div>
+        </div>
+    </div>
+    <div class="big-display-value" id="abc-status-display">Ready?</div>
+    <div class="timer-val" id="abc-interval-timer">--</div>
+    <button id="abc-start-btn">START ABCS</button>
+</div>
+
+<script>
+    let audioCtx = null;
+    let wakeLock = null;
+
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
+            }
+        } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+        }
+    }
+
+    function releaseWakeLock() {
+        if (wakeLock) {
+            wakeLock.release();
+            wakeLock = null;
+        }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        const anyRunning = Object.values(workouts).some(w => w.running);
+        if (document.visibilityState === 'visible' && anyRunning) {
+            requestWakeLock();
+        }
+    });
+
+    function ensureAudioContext() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } else if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playBeep(freq, dur) {
+        ensureAudioContext();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+    }
+
+    function playShortBeep() {
+        playBeep(440, 0.1);
+    }
+
+    function playLongBeep() {
+        playBeep(880, 0.2);
+    }
+
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function startDriftCorrectedTimer(tickFn) {
+        let expected = Date.now() + 1000;
+        const id = {ref: null};
+
+        function step() {
+            const drift = Date.now() - expected;
+            expected += 1000;
+            id.ref = setTimeout(step, Math.max(0, 1000 - drift));
+            tickFn();
+        }
+
+        id.ref = setTimeout(step, 1000);
+        return id;
+    }
+
+    function stopTimer(id) {
+        if (id && id.ref !== null) {
+            clearTimeout(id.ref);
+            id.ref = null;
+        }
+    }
+
+    function runStartCountdown(buttonElement, onComplete) {
+        let count = 5;
+        buttonElement.disabled = true;
+        buttonElement.classList.add('countdown');
+        buttonElement.textContent = count;
+        playShortBeep();
+        const countdownInterval = setInterval(() => {
+            count--;
+            if (count > 0) {
+                buttonElement.textContent = count;
+                playShortBeep();
+            } else {
+                clearInterval(countdownInterval);
+                buttonElement.disabled = false;
+                buttonElement.classList.remove('countdown');
+                buttonElement.classList.add('stop');
+                buttonElement.textContent = 'RESET';
+                onComplete();
+            }
+        }, 1000);
+    }
+
+    function createWorkout(config) {
+        const {
+            stepsPerRound, getInterval, getRepsLabel,
+            elements, startLabel,
+            defaultTotalSeconds, defaultRounds,
+            minRounds, maxRounds,
+        } = config;
+
+        let totalSeconds = defaultTotalSeconds;
+        let rounds = defaultRounds;
+
+        const state = {
+            countdown: totalSeconds,
+            round: 1,
+            idx: 0,
+            interval: getInterval(0, totalSeconds, rounds),
+            intervalStart: true,
+            running: false,
+            timer: null,
+        };
+
+        function setAdjBtnsDisabled(disabled) {
+            elements.timeDecButton.disabled = disabled;
+            elements.timeIncButton.disabled = disabled;
+            elements.roundsDecButton.disabled = disabled;
+            elements.roundsIncButton.disabled = disabled;
+        }
+
+        function reset() {
+            stopTimer(state.timer);
+            Object.assign(state, {
+                countdown: totalSeconds,
+                round: 1,
+                idx: 0,
+                interval: getInterval(0, totalSeconds, rounds),
+                intervalStart: true,
+                running: false,
+                timer: null,
+            });
+            elements.countdown.textContent = formatTime(totalSeconds);
+            elements.roundDisplay.textContent = `1 / ${rounds}`;
+            elements.mainDisplay.textContent = 'Ready?';
+            elements.intervalTimer.textContent = '--';
+            elements.startButton.textContent = startLabel;
+            elements.startButton.classList.remove('stop', 'countdown');
+            elements.startButton.disabled = false;
+            setAdjBtnsDisabled(false);
+            const anyRunning = Object.values(workouts).some(w => w.running);
+            if (!anyRunning) releaseWakeLock();
+        }
+
+        function tick() {
+            if (state.countdown === 0) {
+                elements.countdown.textContent = formatTime(0);
+                elements.mainDisplay.textContent = 'Done!';
+                elements.intervalTimer.textContent = '--';
+                playLongBeep();
+                stopTimer(state.timer);
+                releaseWakeLock();
+                return;
+            }
+
+            if (state.intervalStart) {
+                playLongBeep();
+                state.intervalStart = false;
+            }
+
+            elements.countdown.textContent = formatTime(state.countdown);
+            elements.roundDisplay.textContent = `${state.round} / ${rounds}`;
+            elements.mainDisplay.textContent = getRepsLabel(state.idx, state.round);
+            elements.intervalTimer.textContent = state.interval + 's';
+
+            if (state.interval <= 5) playShortBeep();
+
+            state.countdown--;
+            state.interval--;
+
+            if (state.interval === 0) {
+                state.idx++;
+                if (state.idx === stepsPerRound) {
+                    state.idx = 0;
+                    state.round++;
+                }
+                state.interval = getInterval(state.idx, totalSeconds, rounds);
+                state.intervalStart = true;
+            }
+        }
+
+        elements.startButton.addEventListener('click', function () {
+            if (!state.running) {
+                state.running = true;
+                setAdjBtnsDisabled(true);
+                runStartCountdown(this, () => {
+                    requestWakeLock();
+                    state.timer = startDriftCorrectedTimer(tick);
+                    tick();
+                });
+            } else {
+                reset();
+            }
+        });
+
+        elements.timeDecButton.addEventListener('click', () => {
+            if (state.running) return;
+            const newSecs = totalSeconds - 60;
+            if (newSecs < 60) return;
+            totalSeconds = newSecs;
+            state.countdown = totalSeconds;
+            state.interval = getInterval(state.idx, totalSeconds, rounds);
+            elements.countdown.textContent = formatTime(totalSeconds);
+        });
+
+        elements.timeIncButton.addEventListener('click', () => {
+            if (state.running) return;
+            const newSecs = totalSeconds + 60;
+            if (newSecs > 1800) return;
+            totalSeconds = newSecs;
+            state.countdown = totalSeconds;
+            state.interval = getInterval(state.idx, totalSeconds, rounds);
+            elements.countdown.textContent = formatTime(totalSeconds);
+        });
+
+        elements.roundsDecButton.addEventListener('click', () => {
+            if (state.running) return;
+            if (rounds <= minRounds) return;
+            rounds--;
+            state.interval = getInterval(state.idx, totalSeconds, rounds);
+            elements.roundDisplay.textContent = `1 / ${rounds}`;
+        });
+
+        elements.roundsIncButton.addEventListener('click', () => {
+            if (state.running) return;
+            if (rounds >= maxRounds) return;
+            rounds++;
+            state.interval = getInterval(state.idx, totalSeconds, rounds);
+            elements.roundDisplay.textContent = `1 / ${rounds}`;
+        });
+
+        reset();
+        return state;
+    }
+
+    const PRESS_REPS = [2, 3, 5, 10];
+    const workouts = {};
+
+    workouts.press = createWorkout({
+        defaultTotalSeconds: 1800,
+        defaultRounds: 5,
+        minRounds: 1,
+        maxRounds: 5,
+        stepsPerRound: PRESS_REPS.length,
+        getInterval: (idx, totalSeconds, rounds) => PRESS_REPS.map(
+            r => Math.round(
+                r * totalSeconds / (PRESS_REPS.reduce((a, b) => a + b, 0) * rounds)
+            ))[idx],
+        getRepsLabel: (idx) => `1 Clean · ${PRESS_REPS[idx]} Presses`,
+        elements: {
+            countdown: document.getElementById('press-countdown'),
+            roundDisplay: document.getElementById('press-round-display'),
+            mainDisplay: document.getElementById('press-reps-display'),
+            intervalTimer: document.getElementById('press-interval-timer'),
+            startButton: document.getElementById('press-start-btn'),
+            timeDecButton: document.getElementById('press-time-dec'),
+            timeIncButton: document.getElementById('press-time-inc'),
+            roundsDecButton: document.getElementById('press-rounds-dec'),
+            roundsIncButton: document.getElementById('press-rounds-inc'),
+        },
+        startLabel: 'START PRESSES',
+    });
+
+    workouts.abc = createWorkout({
+        defaultTotalSeconds: 1800,
+        defaultRounds: 30,
+        minRounds: 1,
+        maxRounds: 30,
+        stepsPerRound: 1,
+        getInterval: (idx, totalSeconds, rounds) => Math.round(totalSeconds / rounds),
+        getRepsLabel: () => '2 Cleans · 1 Press · 3 Squats',
+        elements: {
+            countdown: document.getElementById('abc-countdown'),
+            roundDisplay: document.getElementById('abc-rep-display'),
+            mainDisplay: document.getElementById('abc-status-display'),
+            intervalTimer: document.getElementById('abc-interval-timer'),
+            startButton: document.getElementById('abc-start-btn'),
+            timeDecButton: document.getElementById('abc-time-dec'),
+            timeIncButton: document.getElementById('abc-time-inc'),
+            roundsDecButton: document.getElementById('abc-rounds-dec'),
+            roundsIncButton: document.getElementById('abc-rounds-inc'),
+        },
+        startLabel: 'START ABCS',
+    });
+</script>
+</body>
+</html>
