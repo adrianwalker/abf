@@ -370,11 +370,12 @@
             timer: null,
         };
 
-        function setAdjBtnsDisabled(disabled) {
-            elements.timeDecButton.disabled = disabled;
-            elements.timeIncButton.disabled = disabled;
-            elements.roundsDecButton.disabled = disabled;
-            elements.roundsIncButton.disabled = disabled;
+        function setDecIncButtonsVisible(visible) {
+            const display = visible ? '' : 'none';
+            elements.timeDecButton.style.display = display;
+            elements.timeIncButton.style.display = display;
+            elements.roundsDecButton.style.display = display;
+            elements.roundsIncButton.style.display = display;
         }
 
         function reset() {
@@ -395,7 +396,7 @@
             elements.startButton.textContent = startLabel;
             elements.startButton.classList.remove('stop', 'countdown');
             elements.startButton.disabled = false;
-            setAdjBtnsDisabled(false);
+            setDecIncButtonsVisible(true);
             const anyRunning = Object.values(workouts).some(w => w.running);
             if (!anyRunning) releaseWakeLock();
         }
@@ -440,7 +441,7 @@
         elements.startButton.addEventListener('click', function () {
             if (!state.running) {
                 state.running = true;
-                setAdjBtnsDisabled(true);
+                setDecIncButtonsVisible(false);
                 runStartCountdown(this, () => {
                     requestWakeLock();
                     state.timer = startDriftCorrectedTimer(tick);
