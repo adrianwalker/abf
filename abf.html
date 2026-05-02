@@ -121,7 +121,7 @@
 
         button.countdown {
             background-color: var(--orange);
-            color: #121212;
+            color: white;
         }
 
         button.stop {
@@ -144,7 +144,7 @@
             padding: 10px 4px;
         }
 
-        .adj-btn {
+        .dec-int-btn {
             width: 36px;
             padding: 0;
             font-size: 1.2rem;
@@ -161,20 +161,20 @@
             line-height: 1;
         }
 
-        .adj-btn:first-child {
+        .dec-int-btn:first-child {
             border-radius: 12px 0 0 12px;
         }
 
-        .adj-btn:last-child {
+        .dec-int-btn:last-child {
             border-radius: 0 12px 12px 0;
         }
 
-        .adj-btn:disabled {
+        .dec-int-btn:disabled {
             opacity: 0.3;
             cursor: default;
         }
 
-        .adj-btn:not(:disabled):hover {
+        .dec-int-btn:not(:disabled):hover {
             background-color: #4a4a4a;
         }
     </style>
@@ -187,22 +187,22 @@
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-card-inner">
-                <button class="adj-btn" id="press-time-dec">−</button>
+                <button class="dec-int-btn" id="press-time-dec">−</button>
                 <div class="stat-card-center">
                     <div class="label">Time</div>
                     <div class="value" id="press-countdown">30:00</div>
                 </div>
-                <button class="adj-btn" id="press-time-inc">+</button>
+                <button class="dec-int-btn" id="press-time-inc">+</button>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-card-inner">
-                <button class="adj-btn" id="press-rounds-dec">−</button>
+                <button class="dec-int-btn" id="press-rounds-dec">−</button>
                 <div class="stat-card-center">
                     <div class="label">Round</div>
                     <div class="value" id="press-round-display">1 / 5</div>
                 </div>
-                <button class="adj-btn" id="press-rounds-inc">+</button>
+                <button class="dec-int-btn" id="press-rounds-inc">+</button>
             </div>
         </div>
     </div>
@@ -217,22 +217,22 @@
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-card-inner">
-                <button class="adj-btn" id="abc-time-dec">−</button>
+                <button class="dec-int-btn" id="abc-time-dec">−</button>
                 <div class="stat-card-center">
                     <div class="label">Time</div>
                     <div class="value" id="abc-countdown">30:00</div>
                 </div>
-                <button class="adj-btn" id="abc-time-inc">+</button>
+                <button class="dec-int-btn" id="abc-time-inc">+</button>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-card-inner">
-                <button class="adj-btn" id="abc-rounds-dec">−</button>
+                <button class="dec-int-btn" id="abc-rounds-dec">−</button>
                 <div class="stat-card-center">
                     <div class="label">Round</div>
                     <div class="value" id="abc-rep-display">1 / 30</div>
                 </div>
-                <button class="adj-btn" id="abc-rounds-inc">+</button>
+                <button class="dec-int-btn" id="abc-rounds-inc">+</button>
             </div>
         </div>
     </div>
