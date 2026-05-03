@@ -28,47 +28,6 @@
             margin: 0;
         }
 
-        /* --- Tab bar --- */
-        .tab-bar {
-            display: flex;
-            width: 90%;
-            max-width: 500px;
-            margin-bottom: 20px;
-            background: #1e1e1e;
-            border-radius: 14px;
-            border: 1px solid #333;
-            padding: 4px;
-            box-sizing: border-box;
-            gap: 4px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background: transparent;
-            color: #888;
-            box-shadow: none;
-            margin: 0;
-            transition: background-color 0.2s, color 0.2s;
-            width: auto;
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .tab-btn:active {
-            transform: scale(0.97);
-        }
-        /* --- End tab bar --- */
-
         .container {
             width: 90%;
             max-width: 500px;
@@ -80,10 +39,6 @@
             margin-bottom: 30px;
             text-align: center;
             border: 1px solid #333;
-        }
-
-        .container.hidden {
-            display: none;
         }
 
         h1 {
@@ -138,7 +93,7 @@
         }
 
         .timer-val {
-            font-size: clamp(5.5rem, 28vw, 14rem);
+            font-size: 5.5rem;
             font-weight: 800;
             margin: 0;
             font-variant-numeric: tabular-nums;
@@ -222,210 +177,71 @@
         .dec-int-btn:not(:disabled):hover {
             background-color: #4a4a4a;
         }
-
-        @media (max-height: 500px) {
-            body {
-                padding: 8px 0;
-                box-sizing: border-box;
-            }
-            .tab-bar {
-                margin-bottom: 8px;
-                padding: 4px;
-                width: 96%;
-                max-width: 96%;
-                box-sizing: border-box;
-                flex-shrink: 0;
-            }
-            .tab-btn {
-                padding: 12px;
-                font-size: 1rem;
-            }
-            .container {
-                width: 96%;
-                max-width: 96%;
-                box-sizing: border-box;
-                padding: 25px;
-                margin-bottom: 0;
-                border-radius: 20px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 20px;
-                text-align: left;
-            }
-            .ls-left {
-                flex: 0 0 auto;
-                width: 44%;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: column;
-                gap: 0;
-                align-items: stretch;
-                justify-content: center;
-            }
-            .ls-right {
-                flex: 1 1 0;
-                min-width: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 4px;
-                text-align: center;
-            }
-            h1 {
-                font-size: 1.5rem;
-                margin: 0 0 5px 0;
-                text-align: center;
-            }
-            h2 {
-                font-size: 0.8rem;
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            .stats-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 6px;
-                margin-bottom: 8px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            .stats-grid .stat-card {
-                box-sizing: border-box;
-                min-width: 0;
-            }
-            .stat-card-inner {
-                min-height: 52px;
-                box-sizing: border-box;
-            }
-            .stat-card-center {
-                flex: 1 1 0;
-                min-width: 0;
-                overflow: hidden;
-            }
-            .dec-int-btn {
-                flex-shrink: 0;
-                width: 30px;
-            }
-            .label {
-                font-size: 0.7rem;
-            }
-            .value {
-                font-size: 1.2rem;
-                white-space: nowrap;
-            }
-            .big-display-value {
-                font-size: 1.4rem;
-                margin: 0 0 8px 0;
-                text-align: center;
-            }
-            .timer-val {
-                font-size: clamp(5rem, 42vh, 20rem);
-                line-height: 1;
-                text-align: center;
-            }
-            button {
-                padding: 18px 40px;
-                font-size: 1.2rem;
-                margin: 20px 0 10px 0;
-                width: 100%;
-                min-width: unset;
-                box-sizing: border-box;
-            }
-        }
     </style>
 </head>
 <body>
 
-<div class="tab-bar">
-    <button class="tab-btn active" id="tab-press">Press</button>
-    <button class="tab-btn" id="tab-abc">ABC</button>
-</div>
-
-<div class="container" id="panel-press">
-    <div class="ls-left">
-        <h1>PRESS LADDERS</h1>
-        <h2>2-3-5-10 presses per round</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-card-inner">
-                    <button class="dec-int-btn" id="press-time-dec">−</button>
-                    <div class="stat-card-center">
-                        <div class="label">Time</div>
-                        <div class="value" id="press-countdown">30:00</div>
-                    </div>
-                    <button class="dec-int-btn" id="press-time-inc">+</button>
+<div class="container">
+    <h1>PRESS LADDERS</h1>
+    <h2>2-3-5-10 presses per round</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-inner">
+                <button class="dec-int-btn" id="press-time-dec">−</button>
+                <div class="stat-card-center">
+                    <div class="label">Time</div>
+                    <div class="value" id="press-countdown">30:00</div>
                 </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-inner">
-                    <button class="dec-int-btn" id="press-rounds-dec">−</button>
-                    <div class="stat-card-center">
-                        <div class="label">Round</div>
-                        <div class="value" id="press-round-display">1 / 5</div>
-                    </div>
-                    <button class="dec-int-btn" id="press-rounds-inc">+</button>
-                </div>
+                <button class="dec-int-btn" id="press-time-inc">+</button>
             </div>
         </div>
-        <button id="press-start-btn">START PRESSES</button>
-    </div>
-    <div class="ls-right">
-        <div class="big-display-value" id="press-reps-display">Ready?</div>
-        <div class="timer-val" id="press-interval-timer">--</div>
-    </div>
-</div>
-
-<div class="container hidden" id="panel-abc">
-    <div class="ls-left">
-        <h1>ARMOR BUILDING COMPLEXES</h1>
-        <h2>1 ABC per round</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-card-inner">
-                    <button class="dec-int-btn" id="abc-time-dec">−</button>
-                    <div class="stat-card-center">
-                        <div class="label">Time</div>
-                        <div class="value" id="abc-countdown">30:00</div>
-                    </div>
-                    <button class="dec-int-btn" id="abc-time-inc">+</button>
+        <div class="stat-card">
+            <div class="stat-card-inner">
+                <button class="dec-int-btn" id="press-rounds-dec">−</button>
+                <div class="stat-card-center">
+                    <div class="label">Round</div>
+                    <div class="value" id="press-round-display">1 / 5</div>
                 </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-inner">
-                    <button class="dec-int-btn" id="abc-rounds-dec">−</button>
-                    <div class="stat-card-center">
-                        <div class="label">Round</div>
-                        <div class="value" id="abc-rep-display">1 / 30</div>
-                    </div>
-                    <button class="dec-int-btn" id="abc-rounds-inc">+</button>
-                </div>
+                <button class="dec-int-btn" id="press-rounds-inc">+</button>
             </div>
         </div>
-        <button id="abc-start-btn">START ABCS</button>
     </div>
-    <div class="ls-right">
-        <div class="big-display-value" id="abc-status-display">Ready?</div>
-        <div class="timer-val" id="abc-interval-timer">--</div>
+    <div class="big-display-value" id="press-reps-display">Ready?</div>
+    <div class="timer-val" id="press-interval-timer">--</div>
+    <button id="press-start-btn">START PRESSES</button>
+</div>
+
+<div class="container">
+    <h1>ARMOR BUILDING COMPLEXES</h1>
+    <h2>1 ABC per round</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-inner">
+                <button class="dec-int-btn" id="abc-time-dec">−</button>
+                <div class="stat-card-center">
+                    <div class="label">Time</div>
+                    <div class="value" id="abc-countdown">30:00</div>
+                </div>
+                <button class="dec-int-btn" id="abc-time-inc">+</button>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-inner">
+                <button class="dec-int-btn" id="abc-rounds-dec">−</button>
+                <div class="stat-card-center">
+                    <div class="label">Round</div>
+                    <div class="value" id="abc-rep-display">1 / 30</div>
+                </div>
+                <button class="dec-int-btn" id="abc-rounds-inc">+</button>
+            </div>
+        </div>
     </div>
+    <div class="big-display-value" id="abc-status-display">Ready?</div>
+    <div class="timer-val" id="abc-interval-timer">--</div>
+    <button id="abc-start-btn">START ABCS</button>
 </div>
 
 <script>
-    // --- Tab switching ---
-    document.getElementById('tab-press').addEventListener('click', () => {
-        document.getElementById('panel-press').classList.remove('hidden');
-        document.getElementById('panel-abc').classList.add('hidden');
-        document.getElementById('tab-press').classList.add('active');
-        document.getElementById('tab-abc').classList.remove('active');
-    });
-    document.getElementById('tab-abc').addEventListener('click', () => {
-        document.getElementById('panel-abc').classList.remove('hidden');
-        document.getElementById('panel-press').classList.add('hidden');
-        document.getElementById('tab-abc').classList.add('active');
-        document.getElementById('tab-press').classList.remove('active');
-    });
-
     let audioCtx = null;
     let wakeLock = null;
 
