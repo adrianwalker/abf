@@ -138,7 +138,7 @@
         }
 
         .timer-val {
-            font-size: 5.5rem;
+            font-size: clamp(5.5rem, 28vw, 14rem);
             font-weight: 800;
             margin: 0;
             font-variant-numeric: tabular-nums;
@@ -226,50 +226,112 @@
         @media (max-height: 500px) {
             body {
                 padding: 8px 0;
+                box-sizing: border-box;
             }
             .tab-bar {
                 margin-bottom: 8px;
-                padding: 3px;
+                padding: 4px;
+                width: 96%;
+                max-width: 96%;
+                box-sizing: border-box;
+                flex-shrink: 0;
             }
             .tab-btn {
-                padding: 7px;
-                font-size: 0.9rem;
+                padding: 12px;
+                font-size: 1rem;
             }
             .container {
-                padding: 12px 16px;
-                margin-bottom: 10px;
-                border-radius: 14px;
+                width: 96%;
+                max-width: 96%;
+                box-sizing: border-box;
+                padding: 25px;
+                margin-bottom: 0;
+                border-radius: 20px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 20px;
+                text-align: left;
+            }
+            .ls-left {
+                flex: 0 0 auto;
+                width: 44%;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                align-items: stretch;
+                justify-content: center;
+            }
+            .ls-right {
+                flex: 1 1 0;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                text-align: center;
             }
             h1 {
-                font-size: 1rem;
-                margin-bottom: 2px;
+                font-size: 1.5rem;
+                margin: 0 0 5px 0;
+                text-align: center;
             }
             h2 {
-                font-size: 0.65rem;
-                margin-bottom: 10px;
+                font-size: 0.8rem;
+                margin-bottom: 20px;
+                text-align: center;
             }
             .stats-grid {
-                gap: 8px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
                 margin-bottom: 8px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .stats-grid .stat-card {
+                box-sizing: border-box;
+                min-width: 0;
             }
             .stat-card-inner {
-                min-height: 46px;
+                min-height: 52px;
+                box-sizing: border-box;
+            }
+            .stat-card-center {
+                flex: 1 1 0;
+                min-width: 0;
+                overflow: hidden;
+            }
+            .dec-int-btn {
+                flex-shrink: 0;
+                width: 30px;
+            }
+            .label {
+                font-size: 0.7rem;
             }
             .value {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
+                white-space: nowrap;
             }
             .big-display-value {
-                font-size: 1rem;
-                margin: 4px 0;
+                font-size: 1.4rem;
+                margin: 0 0 8px 0;
+                text-align: center;
             }
             .timer-val {
-                font-size: 3rem;
+                font-size: clamp(5rem, 42vh, 20rem);
+                line-height: 1;
+                text-align: center;
             }
             button {
-                padding: 10px 20px;
-                font-size: 1rem;
-                margin-top: 8px;
-                margin-bottom: 4px;
+                padding: 18px 40px;
+                font-size: 1.2rem;
+                margin: 20px 0 10px 0;
+                width: 100%;
+                min-width: unset;
+                box-sizing: border-box;
             }
         }
     </style>
@@ -282,66 +344,75 @@
 </div>
 
 <div class="container" id="panel-press">
-    <h1>PRESS LADDERS</h1>
-    <h2>2-3-5-10 presses per round</h2>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-card-inner">
-                <button class="dec-int-btn" id="press-time-dec">−</button>
-                <div class="stat-card-center">
-                    <div class="label">Time</div>
-                    <div class="value" id="press-countdown">30:00</div>
+    <div class="ls-left">
+        <h1>PRESS LADDERS</h1>
+        <h2>2-3-5-10 presses per round</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-inner">
+                    <button class="dec-int-btn" id="press-time-dec">−</button>
+                    <div class="stat-card-center">
+                        <div class="label">Time</div>
+                        <div class="value" id="press-countdown">30:00</div>
+                    </div>
+                    <button class="dec-int-btn" id="press-time-inc">+</button>
                 </div>
-                <button class="dec-int-btn" id="press-time-inc">+</button>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-inner">
+                    <button class="dec-int-btn" id="press-rounds-dec">−</button>
+                    <div class="stat-card-center">
+                        <div class="label">Round</div>
+                        <div class="value" id="press-round-display">1 / 5</div>
+                    </div>
+                    <button class="dec-int-btn" id="press-rounds-inc">+</button>
+                </div>
             </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-card-inner">
-                <button class="dec-int-btn" id="press-rounds-dec">−</button>
-                <div class="stat-card-center">
-                    <div class="label">Round</div>
-                    <div class="value" id="press-round-display">1 / 5</div>
-                </div>
-                <button class="dec-int-btn" id="press-rounds-inc">+</button>
-            </div>
-        </div>
+        <button id="press-start-btn">START PRESSES</button>
     </div>
-    <div class="big-display-value" id="press-reps-display">Ready?</div>
-    <div class="timer-val" id="press-interval-timer">--</div>
-    <button id="press-start-btn">START PRESSES</button>
+    <div class="ls-right">
+        <div class="big-display-value" id="press-reps-display">Ready?</div>
+        <div class="timer-val" id="press-interval-timer">--</div>
+    </div>
 </div>
 
 <div class="container hidden" id="panel-abc">
-    <h1>ARMOR BUILDING COMPLEXES</h1>
-    <h2>1 ABC per round</h2>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-card-inner">
-                <button class="dec-int-btn" id="abc-time-dec">−</button>
-                <div class="stat-card-center">
-                    <div class="label">Time</div>
-                    <div class="value" id="abc-countdown">30:00</div>
+    <div class="ls-left">
+        <h1>ARMOR BUILDING COMPLEXES</h1>
+        <h2>1 ABC per round</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-inner">
+                    <button class="dec-int-btn" id="abc-time-dec">−</button>
+                    <div class="stat-card-center">
+                        <div class="label">Time</div>
+                        <div class="value" id="abc-countdown">30:00</div>
+                    </div>
+                    <button class="dec-int-btn" id="abc-time-inc">+</button>
                 </div>
-                <button class="dec-int-btn" id="abc-time-inc">+</button>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-inner">
+                    <button class="dec-int-btn" id="abc-rounds-dec">−</button>
+                    <div class="stat-card-center">
+                        <div class="label">Round</div>
+                        <div class="value" id="abc-rep-display">1 / 30</div>
+                    </div>
+                    <button class="dec-int-btn" id="abc-rounds-inc">+</button>
+                </div>
             </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-card-inner">
-                <button class="dec-int-btn" id="abc-rounds-dec">−</button>
-                <div class="stat-card-center">
-                    <div class="label">Round</div>
-                    <div class="value" id="abc-rep-display">1 / 30</div>
-                </div>
-                <button class="dec-int-btn" id="abc-rounds-inc">+</button>
-            </div>
-        </div>
+        <button id="abc-start-btn">START ABCS</button>
     </div>
-    <div class="big-display-value" id="abc-status-display">Ready?</div>
-    <div class="timer-val" id="abc-interval-timer">--</div>
-    <button id="abc-start-btn">START ABCS</button>
+    <div class="ls-right">
+        <div class="big-display-value" id="abc-status-display">Ready?</div>
+        <div class="timer-val" id="abc-interval-timer">--</div>
+    </div>
 </div>
 
 <script>
+    // --- Tab switching ---
     document.getElementById('tab-press').addEventListener('click', () => {
         document.getElementById('panel-press').classList.remove('hidden');
         document.getElementById('panel-abc').classList.add('hidden');
